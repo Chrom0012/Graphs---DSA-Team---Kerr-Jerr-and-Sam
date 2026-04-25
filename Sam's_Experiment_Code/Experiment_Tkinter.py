@@ -16,6 +16,7 @@ Canvas.create_line(150, 85, 200, 85, fill = "black", width = 2)
 def createNodeAtClick(location):
     print(location.x, location.y)
     Canvas.create_oval(location.x - 25, location.y - 25, location.x + 25, location.y + 25, fill = "green")
+    Canvas.create_text(location.x, location.y, text = f"{location.x}, {location.y}", font = ("Arial", 10, "bold"), fill = "white")
 Canvas.bind("<Button-1>", createNodeAtClick)
 
 Root.mainloop()
