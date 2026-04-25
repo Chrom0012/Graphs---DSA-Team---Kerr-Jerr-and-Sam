@@ -8,6 +8,16 @@ Graph = {
     'F' : ['C']
 }
 # 'A' is the node, whereas 'B' and 'C' is mga edges na connected kay 'A'.
+# Example this ng Adjacency list. 
+print(Graph['A'])  # ['B', 'C']
+print(Graph['B'])  # ['A', 'D', 'E']
+print(Graph['C'])  # ['A', 'F']
 
-print(Graph['A'])  # Output: ['B', 'C']
-print(Graph['B'])  # Output: ['A', 'D', 'E']
+""" If I-traverse natin s'ya
+for i in Graph:
+    print(i, Graph[i])
+"""
+
+
+for i in Graph.items():
+    print(i)
