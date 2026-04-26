@@ -2,16 +2,17 @@ import tkinter as tk
 
 Root = tk.Tk()
 Root.title("Example lang this")
-Root.geometry("500x500")
-
+Root.geometry("700x500")
+"""
 Canvas = tk.Canvas(Root, height = 500, width = 500)
-Canvas.pack(pady=20)
+Canvas.grid(pady=20)
 Canvas.create_text(250,20, text = "Graph Example", font = ("Arial", 16, "bold"))
 Canvas.create_oval(50, 30, 150, 140, fill = "red")
 Canvas.create_text(100, 85, text = "Node A", font = ("Arial", 12, "bold"))
 Canvas.create_oval(200, 30, 300, 140, fill = "blue")
 Canvas.create_text(250, 85, text = "Node B", font = ("Arial", 12, "bold"), fill = "white")
 Canvas.create_line(150, 85, 200, 85, fill = "black", width = 2)
+"""
 mark = 0
 lastx = 0
 lasty = 0
@@ -32,8 +33,17 @@ def createNodeAtClick(location):
         Canvas.create_line(lastx, lasty, location.x, location.y, fill= "black", width = 2)
         lastx = location.x
         lasty = location.y
+def ResetTheNodeClicked():
+    global mark
+    Canvas.delete("all")
+    mark = 0
+sidebar = tk.Frame(Root, width = 200, bg = "lightgray", relief = "sunken", borderwidth = 2)
+sidebar.grid(row = 0, column = 0, sticky = "ns")
 
-
+button_clear = tk.Button(sidebar, text = "Reset", command = ResetTheNodeClicked)
+button_clear.pack(pady = 10)
+Canvas = tk.Canvas(Root, height = 500, width = 700)
+Canvas.grid(row = 0, column = 1, sticky = "nsew")
 
 Canvas.bind("<Button-1>", createNodeAtClick)
 
