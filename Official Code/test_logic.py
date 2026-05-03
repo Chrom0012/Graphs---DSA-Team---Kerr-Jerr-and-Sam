@@ -3,17 +3,22 @@ from logic import graph
 Graph = graph()
 
 while True:
-    input = input("Enter a command (node, edge, or 0 to exit): ")
-    if input == "node":
+    Input = input("Enter a command (node, edge, BFS, or 0 to exit): ")
+    if Input == "node":
         node = input("Enter the node to add: ")
         Graph.add_node(node)
         print(f"Node {node} added.")
-    elif input == "edge":
+    elif Input == "edge":
         node1 = input("Enter the first node: ")
         node2 = input("Enter the second node: ")
         Graph.add_edge(node1, node2)
         print(f"Edge between {node1} and {node2} added.")
-    elif input == "0":
+    elif Input == "BFS":
+        start = input("Enter the starting node for BFS: ")
+        visited, Steps = Graph.BFS(start)
+        print(f"Visited nodes: {visited}")
+        print(f"Total steps taken: {Steps}")
+    elif Input == "0":
         break
     else:
         print("Invalid command. Please try again.")
