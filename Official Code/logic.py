@@ -18,9 +18,9 @@ class graph:
         Path = 0
         while queue:
             node = queue.pop(0)
+            Steps += 1
             if node not in visited:
                 visited.append(node)
-                Steps += 1
                 for edge in self.graph[node]:
                     Steps += 1
                     if edge not in visited:
