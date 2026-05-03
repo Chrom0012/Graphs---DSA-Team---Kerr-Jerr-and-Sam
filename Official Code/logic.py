@@ -12,16 +12,18 @@ class graph:
         if node1 not in self.graph[node2]:
             self.graph[node2].append(node1)
     def BFS(self, start):
-        visited = set()
+        visited = []
         queue = [start]
         Steps = 0
+        Path = 0
         while queue:
             node = queue.pop(0)
-            Steps += 1
             if node not in visited:
-                visited.add(node)
+                visited.append(node)
+                Steps += 1
                 for edge in self.graph[node]:
                     Steps += 1
                     if edge not in visited:
+                        Path += 1
                         queue.append(edge)
-        return visited, Steps
+        return visited, Steps, Path

@@ -15,9 +15,13 @@ while True:
         print(f"Edge between {node1} and {node2} added.")
     elif Input == "BFS":
         start = input("Enter the starting node for BFS: ")
-        visited, Steps = Graph.BFS(start)
+        if start not in Graph.graph:
+            print(f"Node {start} is not in the graph. Please add it first.")
+            continue
+        visited, Steps, Path = Graph.BFS(start)
         print(f"Visited nodes: {visited}")
         print(f"Total steps taken: {Steps}")
+        print(f"Total paths found: {Path}")
     elif Input == "0":
         break
     else:
