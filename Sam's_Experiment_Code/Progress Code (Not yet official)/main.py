@@ -1,0 +1,4 @@
+import gui as graphic 
+if __name__ == "__main__":
+    graphic.main()
+    
