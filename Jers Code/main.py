@@ -8,7 +8,6 @@ root.geometry("1920x1080")
 root.configure(bg="#1f2234")
 root.resizable(False, False)
 root.attributes("-fullscreen", True)
-# ================= TITLE =================
 title_label = tk.Label(
     root,
     text="Graph Traversal Visualizer",
@@ -18,7 +17,6 @@ title_label = tk.Label(
 )
 title_label.place(x=577, y=54)
 
-# ================= CONTROL PANEL =================
 control_panel = tk.Frame(root, width=504, height=867, bg="#10111a")
 control_panel.place(x=61, y=159)
 
@@ -34,7 +32,6 @@ control_text.place(x=45, y=25)
 divider = tk.Frame(control_panel, bg="#a8a8a8", height=1, width=504)
 divider.place(x=0, y=103)
 
-# ================= ALGORITHM =================
 algo_text = tk.Label(
     control_panel,
     text="Select Algorithm",
@@ -64,7 +61,6 @@ dfs_button = tk.Button(
 )
 dfs_button.place(x=44, y=260, width=416, height=60)
 
-# ================= GRAPH CONTROLS =================
 graph_text = tk.Label(
     control_panel,
     text="Graph Controls",
@@ -99,7 +95,6 @@ add_edge_btn = tk.Button(
 )
 add_edge_btn.place(x=44, y=460, width=416, height=60)
 
-# ================= DISPLAY PANEL =================
 display_panel = tk.Frame(root, width=900, height=867, bg="#10111a")
 display_panel.place(x=593, y=159)
 
@@ -112,11 +107,9 @@ canvas = tk.Canvas(
 )
 canvas.pack()
 
-# ================= CONSOLE PANEL =================
 console_panel = tk.Frame(root, width=350, height=867, bg="#10111a")
 console_panel.place(x=1521, y=159)
 
-# ================= STATUS =================
 status_label = tk.Label(
     control_panel,
     text="Status: Idle",
@@ -137,7 +130,6 @@ hint_label = tk.Label(
 )
 hint_label.place(x=50, y=760)
 
-# ================= CONNECT UI and GRAPH =================
 g.set_ui_refs(canvas, status_label, hint_label)
 canvas.bind("<Button-1>", g.on_canvas_click)
 
