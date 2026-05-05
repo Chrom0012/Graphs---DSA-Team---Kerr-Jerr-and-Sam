@@ -1,10 +1,8 @@
-# ================= GRAPH LOGIC =================
 mode = "idle"
 node_count = 0
 nodes = {}
 selected_nodes = []
 
-# UI references
 canvas = None
 status_label = None
 hint_label = None
@@ -54,7 +52,7 @@ def on_canvas_click(event):
 
     x, y = event.x, event.y
 
-    # ================= NODE MODE =================
+    
     if mode == "node":
         r = 20
 
@@ -69,7 +67,7 @@ def on_canvas_click(event):
         nodes[node_count] = (x, y)
         node_count += 1
 
-    # ================= EDGE MODE =================
+    
     elif mode == "edge":
         for nid, (nx, ny) in nodes.items():
 
