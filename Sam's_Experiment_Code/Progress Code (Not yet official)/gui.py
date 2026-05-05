@@ -4,16 +4,7 @@ def main():
     Root = tk.Tk()
     Root.title("Example lang this")
     Root.geometry("700x500")
-    """
-    Canvas = tk.Canvas(Root, height = 500, width = 500)
-    Canvas.grid(pady=20)
-    Canvas.create_text(250,20, text = "Graph Example", font = ("Arial", 16, "bold"))
-    Canvas.create_oval(50, 30, 150, 140, fill = "red")
-    Canvas.create_text(100, 85, text = "Node A", font = ("Arial", 12, "bold"))
-    Canvas.create_oval(200, 30, 300, 140, fill = "blue")
-    Canvas.create_text(250, 85, text = "Node B", font = ("Arial", 12, "bold"), fill = "white")
-    Canvas.create_line(150, 85, 200, 85, fill = "black", width = 2)
-    """
+    
     mark = 0
     lastx = 0
     lasty = 0
