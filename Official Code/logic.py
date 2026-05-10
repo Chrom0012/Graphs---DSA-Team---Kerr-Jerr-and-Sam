@@ -43,3 +43,4 @@ class graph:
                     if edge not in visited:
                         Path += 1
                         stack.append(edge)
+        return visited, Steps, Path

@@ -39,3 +39,4 @@ while True:
 print("Map of the graph:")
 for node, edges in Graph.graph.items():
     print(f"Node {node} is connected to {edges}")
+
