@@ -3,7 +3,7 @@ from logic import graph
 Graph = graph()
 
 while True:
-    Input = input("Enter a command (node, edge, BFS, or 0 to exit): ")
+    Input = input("Enter a command (node, edge, BFS, DFS, or 0 to exit): ")
     if Input == "node":
         node = input("Enter the node to add: ")
         Graph.add_node(node)
@@ -19,6 +19,15 @@ while True:
             print(f"Node {start} is not in the graph. Please add it first.")
             continue
         visited, Steps, Path = Graph.BFS(start)
+        print(f"Visited nodes: {visited}")
+        print(f"Total steps taken: {Steps}")
+        print(f"Total paths found: {Path}")
+    elif Input == "DFS":
+        start = input("Enter the starting node for DFS: ")
+        if start not in Graph.graph:
+            print(f"Node {start} is not in the graph. Please add it first.")
+            continue
+        visited, Steps, Path = Graph.DFS(start)
         print(f"Visited nodes: {visited}")
         print(f"Total steps taken: {Steps}")
         print(f"Total paths found: {Path}")

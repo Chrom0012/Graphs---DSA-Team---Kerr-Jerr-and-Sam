@@ -12,6 +12,7 @@ class graph:
         if node1 not in self.graph[node2]:
             self.graph[node2].append(node1)
     def BFS(self, start):
+
         visited = []
         queue = [start]
         Steps = 0
@@ -27,3 +28,18 @@ class graph:
                         Path += 1
                         queue.append(edge)
         return visited, Steps, Path
+    def DFS(self, start):
+        visited = []
+        stack = [start]
+        Steps = 0
+        Path = 0
+        while stack:
+            node = stack.pop()
+            Steps += 1
+            if node not in visited:
+                visited.append(node)
+                for edge in reversed(self.graph[node]):
+                    Steps += 1
+                    if edge not in visited:
+                        Path += 1
+                        stack.append(edge)
