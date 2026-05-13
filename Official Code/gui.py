@@ -1,102 +1,98 @@
-import tkinter as tk
+mode = "idle"
+node_count = 0
+nodes = {}
+selected_nodes = []
 
-Mode = "Node"
-mark = 0
-lastx = 0
-lasty = 0
+canvas = None
+status_label = None
+hint_label = None
 
-def main():
-    global Mode, mark, lastx, lasty
+
+def set_ui_refs(c, status, hint):
+    global canvas, status_label, hint_label
+    canvas = c
+    status_label = status
+    hint_label = hint
+
+
+def update_hint(text):
+    if hint_label:
+        hint_label.config(text=text)
+
+
+def set_mode(new_mode):
+    global mode, selected_nodes
+
+    mode = new_mode
+    selected_nodes = []
+
+    if mode == "node":
+        status_label.config(text="Status: Add Node Mode")
+        update_hint("Click anywhere on the canvas to add a node")
+
+    elif mode == "edge":
+        status_label.config(text="Status: Add Edge Mode")
+        update_hint("Click the first node")
+
+    else:
+        status_label.config(text="Status: Idle")
+        update_hint("Select a mode to begin")
+
+
+def toggle_node():
+    set_mode("idle" if mode == "node" else "node")
+
+
+def toggle_edge():
+    set_mode("idle" if mode == "edge" else "edge")
+
+
+def on_canvas_click(event):
+    global node_count
+
+    x, y = event.x, event.y
+
     
-    Root = tk.Tk()
-    Root.title("Example lang this")
-    Root.geometry("700x500")
+    if mode == "node":
+        r = 20
 
-    def createNodeAtClick(location):
-        global mark, lastx, lasty, Mode
-        if Mode == "Node":
-            Canvas.create_oval(location.x - 25, location.y - 25, location.x + 25, location.y + 25, fill="green")
-            Canvas.create_text(location.x, location.y, text=f"{location.x}, {location.y}", font=("Arial", 10, "bold"), fill="white")
-            mark = 0
-            lastx = location.x
-            lasty = location.y
-        else:
-            HighlightCreateEdge(location)
-            """
-            Canvas.create_oval(location.x - 25, location.y - 25, location.x + 25, location.y + 25, fill="green")
-            Canvas.create_text(location.x, location.y, text=f"{location.x}, {location.y}", font=("Arial", 10, "bold"), fill="white")
-            if mark != 0:
-                line = Canvas.create_line(lastx, lasty, location.x, location.y, fill="black", width=2)
-                Canvas.tag_lower(line)
-            lastx = location.x
-            lasty = location.y
-            mark = 1
-            """
+        canvas.create_oval(
+            x - r, y - r, x + r, y + r,
+            fill="white",
+            outline=""
+        )
 
-    def ResetTheNodeClicked():
-        global mark
-        Canvas.delete("all")
-        mark = 0
+        canvas.create_text(x, y, text=str(node_count), fill="black")
 
-    def AddNode():
-        global Mode
-        Mode = "Node"
-        status.config(text="Status: Adding Nodes")
+        nodes[node_count] = (x, y)
+        node_count += 1
 
-    def AddEdge():
-        global Mode
-        Mode = "Edge"
-        status.config(text="Status: Adding Edges")
     
-    def hoverHighlightNode(event):
-        x, y = event.x, event.y
-        items = Canvas.find_overlapping(x-25, y-25, x+25, y+25)
-        for item in items:
-            if Canvas.type(item) == "oval":
-                Canvas.itemconfig(item, fill="yellow")
-            else:
-                Canvas.itemconfig(item, fill="green")
-        for item in Canvas.find_all():
-            if item not in items and Canvas.type(item) == "oval":
-                Canvas.itemconfig(item, fill="green")
-    
-    def HighlightCreateEdge(event):
-        global lastx, lasty, mark
-        x, y = event.x, event.y
-        items = Canvas.find_overlapping(x-25, y-25, x+25, y+25)
-        for item in items:
-            if Canvas.type(item) == "oval":
-                Canvas.itemconfig(item, fill="yellow")
-                if mark != 0:
-                    line = Canvas.create_line(lastx, lasty, x, y, fill="black", width=2)
-                    Canvas.tag_lower(line)
-                lastx = x
-                lasty = y
-                mark = 1
-            else:
-                Canvas.itemconfig(item, fill="green")
-        
+    elif mode == "edge":
+        for nid, (nx, ny) in nodes.items():
 
-    sidebar = tk.Frame(Root, width=200, bg="lightgray", relief="sunken", borderwidth=2)
-    sidebar.grid(row=0, column=0, sticky="ns")
+            if (x - nx) ** 2 + (y - ny) ** 2 <= 400:
 
-    Canvas = tk.Canvas(Root, height=500, width=700, bg="white")
-    Canvas.grid(row=0, column=1, sticky="nsew")
+                if len(selected_nodes) == 1 and selected_nodes[0] == nid:
+                    return
 
-    button_node = tk.Button(sidebar, text="Add Node", command=AddNode)
-    button_node.pack(pady=10)
+                selected_nodes.append(nid)
 
-    button_edge = tk.Button(sidebar, text="Add Edge", command=AddEdge)
-    button_edge.pack(pady=10)
+                if len(selected_nodes) == 1:
+                    update_hint("Click the second node")
 
-    button_clear = tk.Button(sidebar, text="Reset", command=ResetTheNodeClicked)
-    button_clear.pack(pady=10)
+                if len(selected_nodes) == 2:
+                    n1 = nodes[selected_nodes[0]]
+                    n2 = nodes[selected_nodes[1]]
 
-    status = tk.Label(sidebar, text="Status: Adding Nodes", bg="lightgray")
-    status.pack(side="bottom", pady=10)
+                    canvas.create_line(
+                        n1[0], n1[1],
+                        n2[0], n2[1],
+                        fill="white",
+                        width=2
+                    )
 
-    Canvas.bind("<Button-1>", createNodeAtClick)
-    Canvas.bind("<Motion>", lambda event: hoverHighlightNode(event))
-    Canvas.bind("<Button-3>", lambda event: HighlightCreateEdge(event))
+                    selected_nodes.clear()
+                    update_hint("Click the first node")
 
-    return Root
+                break
