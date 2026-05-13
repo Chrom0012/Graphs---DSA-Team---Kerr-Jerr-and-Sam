@@ -82,6 +82,7 @@ algo_text.grid(row=2, column=0, pady=(0, 12), sticky="ew")
 bfs_button = tk.Button(
     control_panel,
     text="Breadth-First Search (BFS)",
+    command=g.toggle_bfs,
     fg="#a8a8a8",
     bg="#383940",
     relief="flat"
@@ -91,6 +92,7 @@ bfs_button.grid(row=3, column=0, sticky="ew", padx=20, pady=(0, 8))
 dfs_button = tk.Button(
     control_panel,
     text="Depth-First Search (DFS)",
+    command=g.toggle_dfs,
     fg="#a8a8a8",
     bg="#383940",
     relief="flat"
@@ -159,6 +161,8 @@ canvas.grid(row=0, column=0, sticky="nsew")
 
 g.set_ui_refs(canvas, status_label, hint_label)
 canvas.bind("<Button-1>", g.on_canvas_click)
+canvas.bind("<Button-1>", g.on_canvas_click)
+canvas.bind("<Motion>", g.hover_highlight_node)
 
 # ================= RESPONSIVE FONT SYSTEM =================
 
