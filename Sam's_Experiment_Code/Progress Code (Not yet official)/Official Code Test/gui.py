@@ -1,4 +1,3 @@
-# gui.py
 mode = "idle"
 node_count = 0
 nodes = {}
