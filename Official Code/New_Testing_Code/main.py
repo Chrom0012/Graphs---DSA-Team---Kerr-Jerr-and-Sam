@@ -177,18 +177,12 @@ set_speed_btn = tk.Button(
 set_speed_btn.place(x=280, y=433, width=40, height=30)
 apply_hover_style(set_speed_btn, "#222538", "#2e3456")
 
-restart_btn = tk.Button(
-    control_panel, text="🔄 Restart Traversal", command=g.restart_traversal,
-    font=("42dot Sans", 12, "bold"), fg="#ffffff", bg="#1a1c2e", relief="flat"
-)
-restart_btn.place(x=20, y=490, width=300, height=45)
-apply_hover_style(restart_btn, "#1a1c2e", "#2e3456")
-
+# Shifted clean system reset upwards to close layout gap gracefully
 reset_btn = tk.Button(
     control_panel, text="Reset Graph System", command=g.reset_graph,
     font=("42dot Sans", 12, "bold"), fg="#ffffff", bg="#2c1a1a", relief="flat"
 )
-reset_btn.place(x=20, y=550, width=300, height=45)
+reset_btn.place(x=20, y=490, width=300, height=45)
 apply_hover_style(reset_btn, "#2c1a1a", "#522424")
 
 
@@ -234,92 +228,92 @@ hint_label = tk.Label(
 )
 hint_label.place(x=20, y=95)
 
+# --- PLAYBACK STACK CONTROL CLUSTER ---
 prev_btn = tk.Button(
     console_panel, text="⏮ Prev", command=g.step_backward,
     font=("42dot Sans", 10, "bold"), fg="#ffffff", bg="#222538", relief="flat", state=tk.DISABLED
 )
-prev_btn.place(x=15, y=140, width=85, height=35)
+prev_btn.place(x=15, y=145, width=85, height=35)
 apply_hover_style(prev_btn, "#222538", "#2e3456")
 
 pause_btn = tk.Button(
     console_panel, text="⏸ Pause", command=g.toggle_pause,
     font=("42dot Sans", 10, "bold"), fg="#ffffff", bg="#222538", relief="flat", state=tk.DISABLED
 )
-pause_btn.place(x=110, y=140, width=85, height=35)
+pause_btn.place(x=110, y=145, width=85, height=35)
 apply_hover_style(pause_btn, "#222538", "#2e3456")
 
 step_btn = tk.Button(
     console_panel, text="Next ⏭", command=g.step_forward,
     font=("42dot Sans", 10, "bold"), fg="#ffffff", bg="#222538", relief="flat", state=tk.DISABLED
 )
-step_btn.place(x=205, y=140, width=85, height=35)
+step_btn.place(x=205, y=145, width=85, height=35)
 apply_hover_style(step_btn, "#222538", "#2e3456")
 
+# Shifted Restart Traversal here dynamically to tie directly with the manual execution buttons
+restart_btn = tk.Button(
+    console_panel, text="🔄 Restart Traversal", command=g.restart_traversal,
+    font=("42dot Sans", 11, "bold"), fg="#ffffff", bg="#1a1c2e", relief="flat", state=tk.DISABLED
+)
+restart_btn.place(x=15, y=190, width=275, height=35)
+apply_hover_style(restart_btn, "#1a1c2e", "#2e3456")
+
+# Shifting display tracks downward cleanly to maintain pixel-perfect distribution
 process_label = tk.Label(
     console_panel, text="", font=("42dot Sans", 11, "bold"), fg="#ffffff", bg="#0b0c13"
 )
-process_label.place(x=20, y=190)
+process_label.place(x=20, y=240)
 
 order_title = tk.Label(
     console_panel, text="Traversal Order:", font=("42dot Sans", 11, "bold"), fg="#a8a8a8", bg="#0b0c13"
 )
-order_title.place(x=20, y=220)
+order_title.place(x=20, y=265)
 
 progress_box = tk.Text(
     console_panel, font=("Consolas", 11, "bold"), bg="#12131f", fg="#ffd700",
     wrap="word", borderwidth=0, highlightthickness=1, highlightbackground="#222538", state="disabled"
 )
-progress_box.place(x=20, y=245, width=245, height=200)
+progress_box.place(x=20, y=290, width=245, height=175)
 
 scrollbar_y = tk.Scrollbar(console_panel, orient="vertical", command=progress_box.yview)
-scrollbar_y.place(x=265, y=245, width=18, height=200)
+scrollbar_y.place(x=265, y=290, width=18, height=175)
 progress_box.config(yscrollcommand=scrollbar_y.set)
 
 # ================= PERFORMANCE STATS PANEL =================
 divider5 = tk.Frame(console_panel, bg="#222538", height=1, width=266)
-divider5.place(x=20, y=470)
+divider5.place(x=20, y=485)
 
 stats_title = tk.Label(
     console_panel, text="Performance Statistics", font=("42dot Sans", 13, "bold"), fg="#ffd700", bg="#0b0c13"
 )
-stats_title.place(x=20, y=485)
+stats_title.place(x=20, y=495)
 
 stats_label = tk.Label(
     console_panel, text="Time Elapsed: 0 ms\nNodes Visited: 0 / 0\nMax Structure Depth: 0",
     font=("42dot Sans", 11), fg="#dcdcdc", bg="#0b0c13", justify="left"
 )
-stats_label.place(x=20, y=525)
+stats_label.place(x=20, y=530)
 
 
 # ================= FINE-TUNED STATE ENGINE INTERLOCK =================
 def set_ui_animation_state(is_running, is_paused=False):
-    """
-    Advanced Interlock System:
-    - IDLE (Not Running): Graph creation tools, Speed parameters, Restart, and Reset are accessible.
-    - ACTIVE RUNNING: Everything is locked out except for the main Pause action trigger.
-    - PAUSED: Creation tools stay locked, but Consoles (Resume, Step forward/backward), Restart, and Reset unlock cleanly.
-    """
     if not is_running:
-        # State: Completely Idle or Finished
         graph_modifiers = tk.NORMAL
         playback_controls = tk.DISABLED
         pause_trigger = tk.DISABLED
         action_utilities = tk.NORMAL
     else:
         if is_paused:
-            # State: Mid-Traversal Animation Paused
             graph_modifiers = tk.DISABLED
             playback_controls = tk.NORMAL
             pause_trigger = tk.NORMAL
             action_utilities = tk.NORMAL
         else:
-            # State: Mid-Traversal Animation Actively Streaming
             graph_modifiers = tk.DISABLED
             playback_controls = tk.DISABLED
             pause_trigger = tk.NORMAL
             action_utilities = tk.DISABLED
 
-    # Apply configuration state sets
     bfs_button.config(state=graph_modifiers)
     dfs_button.config(state=graph_modifiers)
     add_vertex_btn.config(state=graph_modifiers)
@@ -330,12 +324,10 @@ def set_ui_animation_state(is_running, is_paused=False):
     directed_radio.config(state=graph_modifiers)
     set_speed_btn.config(state=graph_modifiers)
     
-    # Apply playback step navigation sets
     prev_btn.config(state=playback_controls)
     step_btn.config(state=playback_controls)
     pause_btn.config(state=pause_trigger)
     
-    # Apply system override utility sets
     restart_btn.config(state=action_utilities)
     reset_btn.config(state=action_utilities)
 
