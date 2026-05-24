@@ -4,116 +4,144 @@ from tkinter import messagebox
 
 root = tk.Tk()
 
-root.title("Graph Traversal Visualizer Ultra Pro")
+root.title("Graph Traversal Visualizer")
 root.geometry("1366x768")
-root.configure(bg="#151724") 
+root.configure(bg="#1f2234")
 root.resizable(False, False)
 root.attributes("-fullscreen", True)
-
-# ================= MODERN HOVER EFFECTS FACTORY =================
-def apply_hover_style(button, normal_bg, hover_bg, normal_fg="white", hover_fg="white"):
-    def on_enter(e):
-        if button["state"] != tk.DISABLED:
-            button.config(bg=hover_bg, fg=hover_fg)
-    def on_leave(e):
-        if button["state"] != tk.DISABLED:
-            button.config(bg=normal_bg, fg=normal_fg)
-            
-    button.bind("<Enter>", on_enter)
-    button.bind("<Leave>", on_leave)
-
-# ================= TITLE LABEL =================
 title_label = tk.Label(
     root,
     text="Graph Traversal Visualizer",
-    font=("Instrument Sans", 28, "italic", "bold"),
-    fg="#00e5ff", 
-    bg="#151724"
+    font=("Instrument Sans", 48, "italic"),
+    fg="white",
+    bg="#1f2234"
 )
-title_label.place(relx=0.5, y=30, anchor="center")
+title_label.place(x=577, y=54)
 
-# ================= CONTROL PANEL =================
-control_panel = tk.Frame(root, width=340, height=650, bg="#0b0c13", bd=0, highlightthickness=1, highlightbackground="#222538")
-control_panel.place(x=20, y=85)
+control_panel = tk.Frame(root, width=504, height=867, bg="#10111a")
+control_panel.place(x=61, y=159)
 
 graph_type_var = tk.StringVar(value="undirected")
 
 control_text = tk.Label(
-    control_panel, text="Control Panel", font=("42dot Sans", 20, "bold"), fg="#ffffff", bg="#0b0c13"
+    control_panel,
+    text="Control Panel",
+    font=("42dot Sans", 36),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-control_text.place(x=20, y=15)
+control_text.place(x=45, y=25)
 
-divider = tk.Frame(control_panel, bg="#222538", height=1, width=340)
-divider.place(x=0, y=55)
+divider = tk.Frame(control_panel, bg="#a8a8a8", height=1, width=504)
+divider.place(x=0, y=103)
 
 algo_text = tk.Label(
-    control_panel, text="Select Algorithm", font=("42dot Sans", 14, "bold"), fg="#a8a8a8", bg="#0b0c13"
+    control_panel,
+    text="Select Algorithm",
+    font=("42dot Sans", 24),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-algo_text.place(x=20, y=70)
+algo_text.place(x=140, y=115)
 
 bfs_button = tk.Button(
-    control_panel, text="Breadth-First Search (BFS)", font=("42dot Sans", 11, "bold"),
-    fg="#ffffff", bg="#222538", activebackground="#ffb300", activeforeground="black",
-    disabledforeground="#444866", relief="flat", command=g.start_bfs_mode
+    control_panel,
+    text="Breadth-First Search (BFS)",
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat",
+    command=g.start_bfs_mode
 )
-bfs_button.place(x=20, y=105, width=300, height=40)
-apply_hover_style(bfs_button, "#222538", "#ffd700", "white", "black")
+bfs_button.place(x=44, y=155, width=416, height=60)
 
 dfs_button = tk.Button(
-    control_panel, text="Depth-First Search (DFS)", font=("42dot Sans", 11, "bold"),
-    fg="#ffffff", bg="#222538", activebackground="#00aaff", activeforeground="white",
-    disabledforeground="#444866", relief="flat", command=g.start_dfs_mode
+    control_panel,
+    text="Depth-First Search (DFS)",
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat",
+    command=g.start_dfs_mode
 )
-dfs_button.place(x=20, y=155, width=300, height=40)
-apply_hover_style(dfs_button, "#222538", "#00e5ff", "white", "black")
+dfs_button.place(x=44, y=225, width=416, height=60)
 
-divider2 = tk.Frame(control_panel, bg="#222538", height=1, width=300)
-divider2.place(x=20, y=215)
+divider2 = tk.Frame(control_panel, bg="#a8a8a8", height=1, width=404)
+divider2.place(x=50, y=305)
 
 graph_text = tk.Label(
-    control_panel, text="Graph Controls", font=("42dot Sans", 14, "bold"), fg="#a8a8a8", bg="#0b0c13"
+    control_panel,
+    text="Graph Controls",
+    font=("42dot Sans", 24),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-graph_text.place(x=20, y=225)
+graph_text.place(x=140, y=315)
 
 add_vertex_btn = tk.Button(
-    control_panel, text="Add Vertex", command=g.toggle_vertex, font=("42dot Sans", 11, "bold"),
-    fg="#ffffff", bg="#1a1c2e", disabledforeground="#444866", relief="flat"
+    control_panel,
+    text="Add Vertex",
+    command=g.toggle_vertex,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-add_vertex_btn.place(x=20, y=260, width=145, height=40)
-apply_hover_style(add_vertex_btn, "#1a1c2e", "#2e3456")
+add_vertex_btn.place(x=44, y=355, width=204, height=60)
 
 add_edge_btn = tk.Button(
-    control_panel, text="Add Edge", command=g.toggle_edge, font=("42dot Sans", 11, "bold"),
-    fg="#ffffff", bg="#1a1c2e", disabledforeground="#444866", relief="flat"
+    control_panel,
+    text="Add Edge",
+    command=g.toggle_edge,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-add_edge_btn.place(x=175, y=260, width=145, height=40)
-apply_hover_style(add_edge_btn, "#1a1c2e", "#2e3456")
+add_edge_btn.place(x=256, y=355, width=204, height=60)
 
 move_btn = tk.Button(
-    control_panel, text="Move Vertex", command=g.toggle_move, font=("42dot Sans", 11, "bold"),
-    fg="#ffffff", bg="#1a1c2e", disabledforeground="#444866", relief="flat"
+    control_panel,
+    text="Move Vertex",
+    command=g.toggle_move,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-move_btn.place(x=20, y=310, width=145, height=40)
-apply_hover_style(move_btn, "#1a1c2e", "#2e3456")
+move_btn.place(x=44, y=425, width=204, height=60)
+
 
 delete_btn = tk.Button(
-    control_panel, text="Delete Vertex", command=g.toggle_delete, font=("42dot Sans", 11, "bold"),
-    fg="#ffffff", bg="#1a1c2e", disabledforeground="#444866", relief="flat"
+    control_panel,
+    text="Delete Vertex",
+    command=g.toggle_delete,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-delete_btn.place(x=175, y=310, width=145, height=40)
-apply_hover_style(delete_btn, "#1a1c2e", "#ff4444", "white", "white")
+delete_btn.place(x=256, y=425, width=204, height=60)
 
-divider3 = tk.Frame(control_panel, bg="#222538", height=1, width=300)
-divider3.place(x=20, y=370)
+divider3 = tk.Frame(control_panel, bg="#a8a8a8", height=1, width=404)
+divider3.place(x=50, y=505)
 
 graph_type = tk.Label(
-    control_panel, text="Graph Type", font=("42dot Sans", 14, "bold"), fg="#a8a8a8", bg="#0b0c13"
+    control_panel,
+    text="Graph Type",
+    font=("42dot Sans", 24),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-graph_type.place(x=20, y=380)
+graph_type.place(x=44, y=515)
 
+# ================= GRAPH TYPE =================
 def confirm_directed():
     if g.graph_is_not_empty():
-        if messagebox.askyesno("Change Graph Type", "Switching to DIRECTED will reset the graph.\n\nContinue?"):
+        if messagebox.askyesno(
+            "Change Graph Type",
+            "Switching to DIRECTED will reset the graph.\n\nDo you want to continue?"
+        ):
             g.reset_graph()
             graph_type_var.set("directed")
             g.set_graph_type("directed")
@@ -123,7 +151,10 @@ def confirm_directed():
 
 def confirm_undirected():
     if g.graph_is_not_empty():
-        if messagebox.askyesno("Change Graph Type", "Switching to UNDIRECTED will reset the graph.\n\nContinue?"):
+        if messagebox.askyesno(
+            "Change Graph Type",
+            "Switching to UNDIRECTED will reset the graph.\n\nDo you want to continue?"
+        ):
             g.reset_graph()
             graph_type_var.set("undirected")
             g.set_graph_type("undirected")
@@ -132,236 +163,207 @@ def confirm_undirected():
         g.set_graph_type("undirected")
 
 undirected_radio = tk.Radiobutton(
-    control_panel, text="Undirected", variable=graph_type_var, value="undirected",
-    command=confirm_undirected, font=("42dot Sans", 11), fg="#ffffff", bg="#0b0c13",
-    selectcolor="#222538", activebackground="#0b0c13", activeforeground="white"
+    control_panel,
+    text="Undirected",
+    variable=graph_type_var,
+    value="undirected",
+    command=confirm_undirected,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#10111a",
+    selectcolor="#383940",
+    activebackground="#10111a"
 )
-undirected_radio.place(x=135, y=383)
+undirected_radio.place(x=220, y=520)
+
 
 directed_radio = tk.Radiobutton(
-    control_panel, text="Directed", variable=graph_type_var, value="directed",
-    command=confirm_directed, font=("42dot Sans", 11), fg="#ffffff", bg="#0b0c13",
-    selectcolor="#222538", activebackground="#0b0c13", activeforeground="white"
+    control_panel,
+    text="Directed",
+    variable=graph_type_var,
+    value="directed",
+    command=confirm_directed,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#10111a",
+    selectcolor="#383940",
+    activebackground="#10111a"
 )
-directed_radio.place(x=240, y=383)
+directed_radio.place(x=360, y=520)
 
 speed_label = tk.Label(
-    control_panel, text="Speed (ms)", font=("42dot Sans", 12), fg="#a8a8a8", bg="#0b0c13"
+    control_panel,
+    text="Animation Speed (ms)",
+    font=("42dot Sans", 16),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-speed_label.place(x=20, y=435)
+speed_label.place(x=44, y=595)
 
 speed_entry = tk.Entry(
-    control_panel, font=("42dot Sans", 12), bg="#1a1c2e", fg="#ffffff",
-    insertbackground="white", borderwidth=0, highlightthickness=1, highlightbackground="#222538"
+    control_panel,
+    font=("42dot Sans", 14),
+    bg="#383940",
+    fg="#a8a8a8",
+    insertbackground="white"
 )
-vcmd = root.register(lambda P: P.isdigit() or P == "")
+
+def validate_speed_input(P):
+    return P.isdigit() or P == ""
+
+vcmd = root.register(validate_speed_input)
 speed_entry.config(validate="key", validatecommand=(vcmd, "%P"))
-speed_entry.place(x=190, y=433, width=80, height=30)
+
+speed_entry.place(x=256, y=590, width=164, height=40)
 speed_entry.insert(0, "650")
 
 def apply_speed():
     try:
         value = int(speed_entry.get())
-        if value < 50: value = 50
+
+        if value < 50:
+            value = 50
+
         g.set_animation_speed(value)
-        g.update_hint(f"Speed configured to {value} ms")
+        g.update_hint(f"Animation speed set to {value} ms")
+
     except:
         g.set_animation_speed(650)
-        g.update_hint("Default speed loaded (650 ms)")
+        g.update_hint("Invalid input. Using default speed (650 ms)")
+
     control_panel.focus_set()
 
 set_speed_btn = tk.Button(
-    control_panel, text="Set", command=apply_speed, font=("42dot Sans", 10, "bold"),
-    fg="#ffffff", bg="#222538", relief="flat"
+    control_panel,
+    text="Set",
+    command=apply_speed,
+    font=("42dot Sans", 12),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-set_speed_btn.place(x=280, y=433, width=40, height=30)
-apply_hover_style(set_speed_btn, "#222538", "#2e3456")
+set_speed_btn.place(x=420, y=590, width=40, height=40)
 
 restart_btn = tk.Button(
-    control_panel, text="🔄 Restart Traversal", command=g.restart_traversal,
-    font=("42dot Sans", 12, "bold"), fg="#ffffff", bg="#1a1c2e", relief="flat"
+    control_panel,
+    text="Restart Traversal",
+    command=g.restart_traversal,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-restart_btn.place(x=20, y=490, width=300, height=45)
-apply_hover_style(restart_btn, "#1a1c2e", "#2e3456")
+restart_btn.place(x=44, y=680, width=416, height=61)
 
 reset_btn = tk.Button(
-    control_panel, text="Reset Graph System", command=g.reset_graph,
-    font=("42dot Sans", 12, "bold"), fg="#ffffff", bg="#2c1a1a", relief="flat"
+    control_panel,
+    text="Reset Graph",
+    command=g.reset_graph,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-reset_btn.place(x=20, y=550, width=300, height=45)
-apply_hover_style(reset_btn, "#2c1a1a", "#522424")
+reset_btn.place(x=44, y=750, width=416, height=61)
 
+# ================= DISPLAY PANEL =================
 
-# ================= CANVAS DISPLAY PANEL =================
-display_panel = tk.Frame(root, width=640, height=650, bg="#0b0c13", highlightthickness=1, highlightbackground="#222538")
-display_panel.place(x=380, y=85)
+display_panel = tk.Frame(root, width=900, height=867, bg="#10111a")
+display_panel.place(x=593, y=159)
 
-canvas = tk.Canvas(display_panel, width=640, height=650, bg="#0b0c13", highlightthickness=0, scrollregion=(-3000, -3000, 3000, 3000))
+canvas = tk.Canvas(
+    display_panel,
+    width=900,
+    height=867,
+    bg="#10111a",
+    highlightthickness=0
+)
 canvas.pack()
 
-btn_zoom_in = tk.Button(display_panel, text="[ + ] Zoom In", font=("42dot Sans", 10, "bold"), bg="#1a1c2e", fg="white", relief="flat", command=lambda: g.execute_ui_zoom(1.15, 320, 325))
-btn_zoom_in.place(x=420, y=15, width=100, height=30)
-apply_hover_style(btn_zoom_in, "#1a1c2e", "#00e5ff", "white", "black")
-
-btn_zoom_out = tk.Button(display_panel, text="[ - ] Zoom Out", font=("42dot Sans", 10, "bold"), bg="#1a1c2e", fg="white", relief="flat", command=lambda: g.execute_ui_zoom(0.85, 320, 325))
-btn_zoom_out.place(x=525, y=15, width=100, height=30)
-apply_hover_style(btn_zoom_out, "#1a1c2e", "#00e5ff", "white", "black")
-
-pan_hint = tk.Label(display_panel, text="💡 Right-Click Drag to Pan | Scroll Wheel to Zoom", font=("42dot Sans", 9), fg="#646882", bg="#0b0c13")
-pan_hint.place(x=10, y=625)
+console_panel = tk.Frame(root, width=350, height=867, bg="#10111a")
+console_panel.place(x=1521, y=159)
 
 
-# ================= CONSOLE PANEL =================
-console_panel = tk.Frame(root, width=306, height=650, bg="#0b0c13", highlightthickness=1, highlightbackground="#222538")
-console_panel.place(x=1040, y=85)
-
-console_text_lbl = tk.Label(
-    console_panel, text="Console", font=("42dot Sans", 20, "bold"), fg="#ffffff", bg="#0b0c13"
+console_text = tk.Label(
+    console_panel,
+    text="Console",
+    font=("42dot Sans", 36),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-console_text_lbl.place(x=20, y=15)
+console_text.place(x=45, y=25)
 
-divider4 = tk.Frame(console_panel, bg="#222538", height=1, width=306)
-divider4.place(x=0, y=55)
-
+divider4 = tk.Frame(console_panel, bg="#a8a8a8", height=1, width=275)
+divider4.place(x=38, y=103)
+# ================= STATUS =================
 status_label = tk.Label(
-    console_panel, text="Status: Idle", font=("42dot Sans", 12, "bold"), fg="#a8a8a8", bg="#0b0c13"
+    console_panel,
+    text="Status: Idle",
+    font=("42dot Sans", 18),
+    fg="#a8a8a8",
+    bg="#10111a"
 )
-status_label.place(x=20, y=65)
+status_label.place(x=20, y=140)
 
 hint_label = tk.Label(
-    console_panel, text="Select a mode to begin", font=("42dot Sans", 11),
-    fg="#00e5ff", bg="#0b0c13", wraplength=260, justify="left"
+    console_panel,
+    text="Select a mode to begin",
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#10111a",
+    wraplength=400,
+    justify="left"
 )
-hint_label.place(x=20, y=95)
+hint_label.place(x=20, y=190)
 
-prev_btn = tk.Button(
-    console_panel, text="⏮ Prev", command=g.step_backward,
-    font=("42dot Sans", 10, "bold"), fg="#ffffff", bg="#222538", relief="flat", state=tk.DISABLED
+progress_label = tk.Label(
+    console_panel,
+    text="Traversal Order: \n",
+    font=("42dot Sans", 14),
+    fg="#00d4ff",
+    bg="#10111a",
+    wraplength=300,
+    justify="left"
 )
-prev_btn.place(x=15, y=140, width=85, height=35)
-apply_hover_style(prev_btn, "#222538", "#2e3456")
-
-pause_btn = tk.Button(
-    console_panel, text="⏸ Pause", command=g.toggle_pause,
-    font=("42dot Sans", 10, "bold"), fg="#ffffff", bg="#222538", relief="flat", state=tk.DISABLED
-)
-pause_btn.place(x=110, y=140, width=85, height=35)
-apply_hover_style(pause_btn, "#222538", "#2e3456")
-
-step_btn = tk.Button(
-    console_panel, text="Next ⏭", command=g.step_forward,
-    font=("42dot Sans", 10, "bold"), fg="#ffffff", bg="#222538", relief="flat", state=tk.DISABLED
-)
-step_btn.place(x=205, y=140, width=85, height=35)
-apply_hover_style(step_btn, "#222538", "#2e3456")
+progress_label.place(x=20, y=350)
 
 process_label = tk.Label(
-    console_panel, text="", font=("42dot Sans", 11, "bold"), fg="#ffffff", bg="#0b0c13"
+    console_panel,
+    text="",
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#10111a",
+    justify="left",
+    anchor="w"
 )
-process_label.place(x=20, y=190)
+process_label.place(x=20, y=300)
 
-order_title = tk.Label(
-    console_panel, text="Traversal Order:", font=("42dot Sans", 11, "bold"), fg="#a8a8a8", bg="#0b0c13"
+pause_btn = tk.Button(
+    console_panel,
+    text="⏸ Pause",
+    command=g.toggle_pause,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-order_title.place(x=20, y=220)
+pause_btn.place(x=75, y=240, width=100, height=50)
+g.set_pause_button(pause_btn)
 
-progress_box = tk.Text(
-    console_panel, font=("Consolas", 11, "bold"), bg="#12131f", fg="#ffd700",
-    wrap="word", borderwidth=0, highlightthickness=1, highlightbackground="#222538", state="disabled"
+step_btn = tk.Button(
+    console_panel,
+    text="⏭ Step",
+    command=g.step_forward,
+    font=("42dot Sans", 14),
+    fg="#a8a8a8",
+    bg="#383940",
+    relief="flat"
 )
-progress_box.place(x=20, y=245, width=245, height=200)
+step_btn.place(x=180, y=240, width=100, height=50)
 
-scrollbar_y = tk.Scrollbar(console_panel, orient="vertical", command=progress_box.yview)
-scrollbar_y.place(x=265, y=245, width=18, height=200)
-progress_box.config(yscrollcommand=scrollbar_y.set)
-
-# ================= PERFORMANCE STATS PANEL =================
-divider5 = tk.Frame(console_panel, bg="#222538", height=1, width=266)
-divider5.place(x=20, y=470)
-
-stats_title = tk.Label(
-    console_panel, text="Performance Statistics", font=("42dot Sans", 13, "bold"), fg="#ffd700", bg="#0b0c13"
-)
-stats_title.place(x=20, y=485)
-
-stats_label = tk.Label(
-    console_panel, text="Time Elapsed: 0 ms\nNodes Visited: 0 / 0\nMax Structure Depth: 0",
-    font=("42dot Sans", 11), fg="#dcdcdc", bg="#0b0c13", justify="left"
-)
-stats_label.place(x=20, y=525)
-
-
-# ================= FINE-TUNED STATE ENGINE INTERLOCK =================
-def set_ui_animation_state(is_running, is_paused=False):
-    """
-    Advanced Interlock System:
-    - IDLE (Not Running): Graph creation tools, Speed parameters, Restart, and Reset are accessible.
-    - ACTIVE RUNNING: Everything is locked out except for the main Pause action trigger.
-    - PAUSED: Creation tools stay locked, but Consoles (Resume, Step forward/backward), Restart, and Reset unlock cleanly.
-    """
-    if not is_running:
-        # State: Completely Idle or Finished
-        graph_modifiers = tk.NORMAL
-        playback_controls = tk.DISABLED
-        pause_trigger = tk.DISABLED
-        action_utilities = tk.NORMAL
-    else:
-        if is_paused:
-            # State: Mid-Traversal Animation Paused
-            graph_modifiers = tk.DISABLED
-            playback_controls = tk.NORMAL
-            pause_trigger = tk.NORMAL
-            action_utilities = tk.NORMAL
-        else:
-            # State: Mid-Traversal Animation Actively Streaming
-            graph_modifiers = tk.DISABLED
-            playback_controls = tk.DISABLED
-            pause_trigger = tk.NORMAL
-            action_utilities = tk.DISABLED
-
-    # Apply configuration state sets
-    bfs_button.config(state=graph_modifiers)
-    dfs_button.config(state=graph_modifiers)
-    add_vertex_btn.config(state=graph_modifiers)
-    add_edge_btn.config(state=graph_modifiers)
-    move_btn.config(state=graph_modifiers)
-    delete_btn.config(state=graph_modifiers)
-    undirected_radio.config(state=graph_modifiers)
-    directed_radio.config(state=graph_modifiers)
-    set_speed_btn.config(state=graph_modifiers)
-    
-    # Apply playback step navigation sets
-    prev_btn.config(state=playback_controls)
-    step_btn.config(state=playback_controls)
-    pause_btn.config(state=pause_trigger)
-    
-    # Apply system override utility sets
-    restart_btn.config(state=action_utilities)
-    reset_btn.config(state=action_utilities)
-
-g.set_ui_animation_state = set_ui_animation_state
-
-# ================= INITIALIZE FRAMEWORK SYSTEM =================
-g.set_ui_refs(canvas, status_label, hint_label, progress_box, process_label, stats_label)
-
-g.set_button_refs({
-    "bfs": bfs_button, "dfs": dfs_button, "vertex": add_vertex_btn,
-    "edge": add_edge_btn, "move": move_btn, "delete": delete_btn,
-    "undirected": undirected_radio, "directed": directed_radio,
-    "speed": set_speed_btn, "restart": restart_btn, "reset": reset_btn,
-    "previous": prev_btn, "pause": pause_btn, "step": step_btn
-})
-
+g.set_ui_refs(canvas, status_label, hint_label, progress_label, process_label)
 canvas.bind("<Button-1>", g.on_canvas_click)
 canvas.bind("<Motion>", g.on_mouse_move)
 canvas.bind("<B1-Motion>", g.on_canvas_drag)
 canvas.bind("<ButtonRelease-1>", g.on_canvas_release)
-
-canvas.bind("<Button-2>", g.start_canvas_pan) 
-canvas.bind("<B2-Motion>", g.drag_canvas_pan)
-canvas.bind("<Button-3>", g.start_canvas_pan) 
-canvas.bind("<B3-Motion>", g.drag_canvas_pan)
-
-canvas.bind("<MouseWheel>", g.handle_mouse_wheel_zoom)
-
 root.mainloop()
