@@ -3,11 +3,6 @@ DSA all about graphs
 
 This project is intended to make a visualizations all about graphs. Including directed, and undirected graphs. It visualizes how the Breadth First Search (BFS), and Depth First Search (DFS) works. Traversing each vertex from any starting point.
 
-
-# Graph Topology Engine Dashboard
-
-> An interactive Python/Tkinter application for creating, editing, and visualizing graphs, with BFS/DFS traversal animation, real‑time diagnostics, and a fully customizable UI.
-
 ---
 
 ## Table of Contents
@@ -54,8 +49,6 @@ The **Graph Topology Engine Dashboard** lets you build undirected or directed gr
 - Fully customisable vertex colours, sizes, edge widths, and canvas background.
 - Zoom, pan, random graph generator, and early‑stop target vertex.
 
-> **Insert image:** *The main application window with the canvas in the center, left sidebar tools, right sidebar diagnostics – label each area.*  
-> *Caption: "The complete dashboard – left sidebar (tools), canvas (graph workspace), right sidebar (traversal diagnostics)."*
 
 ---
 
@@ -72,8 +65,6 @@ The **Graph Topology Engine Dashboard** lets you build undirected or directed gr
 3. Run from terminal:
 4. The window opens with an empty canvas.
 
-> **Insert image:** *Terminal command line showing `python main.py`.*  
-> *Caption: "Launch command from the project directory."*
 
 ## Quick Start Guide
 
@@ -85,8 +76,6 @@ The **Graph Topology Engine Dashboard** lets you build undirected or directed gr
 4. **Run DFS** – Same button → **Depth‑First Search**.
 5. **Reset** – Use `⚠ Reset Graph Canvas` or the restart button in the right sidebar.
 
-> **Insert image:** *Sequence of three screens: adding vertex, adding edge, running BFS animation.*  
-> *Caption: "From empty canvas to animated BFS traversal."*
 
 ## User Interface Overview
 
@@ -111,9 +100,6 @@ The left sidebar is collapsible (click the `◀` handle). It contains these expa
 - **SPEED CONTROL** – Set animation step delay in milliseconds (default 650 ms).
 - **RESET** – `⚠ Reset Graph Canvas` clears everything.
 
-> **Insert image:** *The left sidebar fully expanded, with each category highlighted.*  
-> *Caption: "The topology builder tools and appearance settings in the left sidebar."*
-
 ### Central Canvas (Graph Workspace)
 
 - Displays the graph.
@@ -122,8 +108,6 @@ The left sidebar is collapsible (click the `◀` handle). It contains these expa
 - **Mouse wheel** – Zoom in/out (centered on mouse position).
 - Top‑left controls: `Zoom [+]` and `Zoom [-]` buttons, plus a pan tip label.
 
-> **Insert image:** *Canvas showing a complex graph with highlighted traversal.*  
-> *Caption: "The central canvas during a DFS animation – active node in cyan."*
 
 ### Right Sidebar (Diagnostics & Playback)
 
@@ -137,9 +121,6 @@ Also collapsible with a `◀` handle. It shows:
 - **TRACE ROADMAP PROGRESS** – The order of visited vertices as a sequence.
 - **LIVE ADJACENCY LIST VIEW** – The graph’s adjacency list, with the current node highlighted.
 - **PERFORMANCE STATISTICS** – Time elapsed (ms), visited nodes count, step counter.
-
-> **Insert image:** *Right sidebar during an animation, showing frontier as a queue and roadmap.*  
-> *Caption: "Diagnostic panel displaying BFS queue, visited order, and performance stats."*
 
 ## Building Graphs
 
@@ -186,9 +167,6 @@ Also collapsible with a `◀` handle. It shows:
 - If too many edges requested, a warning appears.  
 - After generation, the graph is ready for traversal.
 
-> **Insert image:** *Random graph dialog with values 6 vertices, 10 edges, directed unchecked.*  
-> *Caption: "Configuring a random undirected graph with 6 nodes and 10 edges."*
-
 ## Graph Type & Appearance
 
 ### Undirected vs Directed
@@ -212,9 +190,6 @@ Also collapsible with a `◀` handle. It shows:
 ### Canvas Background
 
 - Pick any colour or use one of six presets. The pan tip label and canvas background update immediately.
-
-> **Insert image:** *Colour picker dialog for vertex fill, with preview swatch.*  
-> *Caption: "Customizing vertex appearance – choose any colour."*
 
 ## Graph Traversal (BFS/DFS)
 
@@ -252,8 +227,6 @@ Also collapsible with a `◀` handle. It shows:
 - **Process Label** – Displays current step number.  
 - **Status/Hint** – Informative messages (e.g., “Discovered adjacent node X”).
 
-> **Insert image:** *Right sidebar during a paused DFS, showing stack with `[3, 2, 1]` and visited roadmap.*  
-> *Caption: "Diagnostic view during a Depth‑First Search – stack frontier highlighted."*
 
 ## Advanced Features
 
@@ -273,8 +246,6 @@ Also collapsible with a `◀` handle. It shows:
 - When a traversal starts, the right sidebar **automatically opens** (if closed) and the left sidebar **automatically closes** to maximise diagnostic space.  
 - After traversal finishes, the left sidebar re‑opens (via `auto_open_left_drawer`). You can also manually toggle drawers with their handle buttons.
 
-> **Insert image:** *Animation midway with right sidebar open and left sidebar closed.*  
-> *Caption: "Traversal mode – the right diagnostic panel automatically expands."*
 
 ## Troubleshooting & Tips
 
@@ -322,8 +293,6 @@ The application is modular. Here are the core files and their responsibilities:
 | `ui_helpers.py` | Public API shim for theme and controls. |
 | `graph.py` | Public API shim for graph_core + graph_interaction. |
 
-> **Insert image:** *Folder view with all `.py` files listed.*  
-> *Caption: "Project file organisation – each module handles a specific part of the application."*
 
 ---
 
