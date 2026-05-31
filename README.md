@@ -3,8 +3,7 @@ Dagoc, Jerrell Andrei
 Gonzales, Kerwwyn Gray  
 Samia, Jhon Aaron  
 
-**CPE201**  
-**National University Clark**
+
 
 ## Table of Contents
 
