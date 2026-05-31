@@ -1,10 +1,3 @@
-**Created By**  
-Dagoc, Jerrell Andrei  
-Gonzales, Kerwwyn Gray  
-Samia, Jhon Aaron  
-
-
-
 ## Table of Contents
 
 1. [Introduction](#introduction)  
@@ -37,6 +30,8 @@ Samia, Jhon Aaron
    - [Auto open Drawers](#auto-open-drawers)
 9. [Troubleshooting & Tips](#troubleshooting--tips)  
 
+---
+Created by: Kerr, Jerr, and Sam
 ---
 
 ## Introduction
