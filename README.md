@@ -1,5 +1,4 @@
 # Graphs---DSA-Team---Kerr-Jerr-and-Sam
 DSA all about graphs
 
-There will be folder din for the official group's code. For now you can make your own Experimental code na rin as a documentation na you've made trying to kunyare gawa linked lists or something. 
-
+This project is intended to make a visualizations all about graphs. Including directed, and undirected graphs. It visualizes how the Breadth First Search (BFS), and Depth First Search (DFS) works. Traversing each vertex from any starting point.
