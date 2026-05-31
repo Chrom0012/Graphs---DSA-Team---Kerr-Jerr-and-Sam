@@ -1,155 +1,167 @@
+import sys
 import tkinter as tk
-import graph as g   # <-- your groupmate's file
+import state
+import graph
+import traversal
+import ui_helpers as helpers
+import ui_left_sidebar
+import ui_right_sidebar
+import ui_canvas
 
-# ====================== RESPONSIVE WINDOW ======================
-root = tk.Tk()
-root.title("Graph Traversal Visualizer")
-root.configure(bg="#1f2234")
 
-BASE_W = 1920
-BASE_H = 1080
+def _apply_dpi_scaling(root):
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        except Exception:
+            try:
+                import ctypes
+                ctypes.windll.user32.SetProcessDPIAware()
+            except Exception:
+                pass
+    try:
+        root.update_idletasks()
+        dpi = root.winfo_fpixels('1i')
+        if dpi < 72:
+            dpi = 96.0
+        scale = dpi / 72.0
+        root.tk.call('tk', 'scaling', scale)
+    except Exception:
+        pass
 
-screen_w = root.winfo_screenwidth()
-screen_h = root.winfo_screenheight()
 
-root.geometry(f"{int(screen_w * 0.95)}x{int(screen_h * 0.95)}")
-root.minsize(1200, 700)
-root.resizable(True, True)
+def _set_adaptive_geometry(root):
+    root.update_idletasks()
+    sw = root.winfo_screenwidth()
+    sh = root.winfo_screenheight()
 
-def scale(value):
-    current_w = root.winfo_width()
-    current_h = root.winfo_height()
-    scale_x = current_w / BASE_W
-    scale_y = current_h / BASE_H
-    factor = min(scale_x, scale_y)
-    return max(int(value * factor), 8)
+    win_w = min(int(sw * 0.92), 1600)
+    win_h = min(int(sh * 0.92), 950)
 
-# Grid layout
-root.columnconfigure(0, weight=24, uniform="main")
-root.columnconfigure(1, weight=55, uniform="main")
-root.columnconfigure(2, weight=21, uniform="main")
-root.rowconfigure(1, weight=1)
+    win_w = max(win_w, 900)
+    win_h = max(win_h, 560)
 
-# ================= TITLE =================
-title_label = tk.Label(
-    root, text="Graph Traversal Visualizer",
-    fg="white", bg="#1f2234"
-)
-title_label.grid(row=0, column=0, columnspan=3, pady=(20, 10), sticky="ew")
+    x = (sw - win_w) // 2
+    y = max(0, (sh - win_h) // 2 - 20)   # slightly above centre looks better
+    root.geometry(f"{win_w}x{win_h}+{x}+{y}")
+    root.minsize(860, 520)
 
-# ================= PANELS =================
-control_panel = tk.Frame(root, bg="#10111a")
-control_panel.grid(row=1, column=0, sticky="nsew", padx=(20, 10), pady=(10, 20))
-control_panel.grid_columnconfigure(0, weight=1)
 
-display_panel = tk.Frame(root, bg="#10111a")
-display_panel.grid(row=1, column=1, sticky="nsew", padx=10, pady=(10, 20))
-display_panel.grid_columnconfigure(0, weight=1)
-display_panel.grid_rowconfigure(0, weight=1)
+def main():
+    root = tk.Tk()
+    root.title("Graph Topology Engine Dashboard")
 
-console_panel = tk.Frame(root, bg="#10111a")
-console_panel.grid(row=1, column=2, sticky="nsew", padx=(10, 20), pady=(10, 20))
+    _apply_dpi_scaling(root)
+    _set_adaptive_geometry(root)
 
-# ================= CONTROL PANEL =================
-control_text = tk.Label(control_panel, text="Control Panel", fg="#a8a8a8", bg="#10111a")
-control_text.grid(row=0, column=0, pady=(20, 10), sticky="ew")
+    state.algo_color = "#00e5ff"
 
-divider = tk.Frame(control_panel, bg="#a8a8a8", height=1)
-divider.grid(row=1, column=0, sticky="ew", pady=(0, 20))
+    
+    root.rowconfigure(0, weight=0)   
+    root.rowconfigure(1, weight=1)   
+    root.columnconfigure(0, weight=16)
+    root.columnconfigure(1, weight=73)
+    root.columnconfigure(2, weight=11)
 
-algo_text = tk.Label(control_panel, text="Select Algorithm", fg="#a8a8a8", bg="#10111a")
-algo_text.grid(row=2, column=0, pady=(0, 12), sticky="ew")
+    
+    top_header_bar = tk.Frame(root, bg="#0e101a", height=55,
+                              highlightthickness=1, highlightbackground="#1b1e2e")
+    top_header_bar.grid(row=0, column=0, columnspan=3, sticky="ew")
+    top_header_bar.grid_propagate(False)   
 
-bfs_button = tk.Button(
-    control_panel, text="Breadth-First Search (BFS)",
-    command=g.start_bfs_mode,
-    fg="#a8a8a8", bg="#383940", relief="flat"
-)
-bfs_button.grid(row=3, column=0, sticky="ew", padx=20, pady=(0, 8))
+    app_title_lbl = tk.Label(
+        top_header_bar,
+        text=" ⚡ GRAPH TRAVERSAL DIAGNOSTIC DASHBOARD",
+        font=("Consolas", 15, "bold"),
+        fg="#00e5ff", bg="#0e101a"
+    )
+    app_title_lbl.pack(side="left", padx=15, pady=12)
+    state._app_title_lbl = app_title_lbl
 
-dfs_button = tk.Button(
-    control_panel, text="Depth-First Search (DFS)",
-    command=g.start_dfs_mode,
-    fg="#a8a8a8", bg="#383940", relief="flat"
-)
-dfs_button.grid(row=4, column=0, sticky="ew", padx=20, pady=(0, 18))
+    canvas_result = ui_canvas.build_canvas(root)
+    canvas = canvas_result["canvas"]
 
-divider2 = tk.Frame(control_panel, bg="#a8a8a8", height=1)
-divider2.grid(row=5, column=0, sticky="ew", padx=20, pady=(0, 18))
+    left_result = ui_left_sidebar.build_left_sidebar(
+        root, canvas,
+        canvas_result["frame"],
+        canvas_result["pan_tip_lbl"]
+    )
+    right_result = ui_right_sidebar.build_right_sidebar(root)
 
-graph_text = tk.Label(control_panel, text="Graph Controls", fg="#a8a8a8", bg="#10111a")
-graph_text.grid(row=6, column=0, pady=(0, 12), sticky="ew")
+    
+    left_result["handle_btn"].config(
+        command=lambda: helpers.toggle_left_drawer(
+            left_result["sidebar_canvas"], root,
+            left_result["handle_btn"],
+            left_result["is_left_drawer_open"]
+        )
+    )
 
-add_vertex_btn = tk.Button(
-    control_panel, text="Add Vertex",
-    command=g.toggle_vertex,
-    fg="#a8a8a8", bg="#383940", relief="flat"
-)
-add_vertex_btn.grid(row=7, column=0, sticky="ew", padx=20, pady=(0, 8))
+    state._play_search_btn  = left_result["play_search_btn"]
+    state._stats_title      = right_result["stats_title"]
+    state._frontier_box     = right_result["frontier_box"]
+    state._progress_box     = right_result["progress_box"]
 
-add_edge_btn = tk.Button(
-    control_panel, text="Add Edge",
-    command=g.toggle_edge,
-    fg="#a8a8a8", bg="#383940", relief="flat"
-)
-add_edge_btn.grid(row=8, column=0, sticky="ew", padx=20, pady=(0, 18))
+    state.canvas            = canvas
+    state.status_label      = right_result["status_label"]
+    state._status_label     = right_result["status_label"]
+    state.hint_label        = right_result["hint_label"]
+    state.progress_label    = right_result["progress_box"]
+    state.process_label     = right_result["process_label"]
+    state.stats_label       = right_result["stats_label"]
+    state.frontier_display  = right_result["frontier_box"]
+    state.adj_list_display  = right_result["adj_text_widget"]
 
-# Restart & Reset
-control_panel.grid_rowconfigure(9, weight=1)
+    state.buttons = {
+        "bfs":        left_result["play_search_btn"],
+        "dfs":        left_result["play_search_btn"],
+        "vertex":     left_result["v_btn"],
+        "edge":       left_result["e_btn"],
+        "move":       left_result["m_btn"],
+        "delete":     left_result["del_v_btn"],
+        "edge_delete":left_result["del_e_btn"],
+        "restart":    right_result["restart_btn"],
+        "previous":   right_result["prev_btn"],
+        "pause":      right_result["pause_btn"],
+        "step":       right_result["step_btn"],
+    }
 
-restart_btn = tk.Button(
-    control_panel, text="Restart Traversal",
-    command=g.restart_traversal,
-    fg="#a8a8a8", bg="#383940", relief="flat"
-)
-restart_btn.grid(row=10, column=0, sticky="ew", padx=20, pady=(0, 8))
+    state.update_status  = lambda msg: right_result["status_label"].config(text=msg)
+    state.update_hint    = lambda msg: right_result["hint_label"].config(text=msg)
+    state.update_process = lambda msg: right_result["process_label"].config(text=msg)
 
-reset_btn = tk.Button(
-    control_panel, text="Reset Graph",
-    command=g.reset_graph,
-    fg="#a8a8a8", bg="#383940", relief="flat"
-)
-reset_btn.grid(row=11, column=0, sticky="ew", padx=20, pady=(0, 20))
+    def set_ui_animation_state(is_running, is_paused=False):
+        helpers.set_ui_animation_state(
+            is_running, is_paused,
+            play_search_btn  = left_result["play_search_btn"],
+            v_btn            = left_result["v_btn"],
+            e_btn            = left_result["e_btn"],
+            m_btn            = left_result["m_btn"],
+            del_v_btn        = left_result["del_v_btn"],
+            del_e_btn        = left_result["del_e_btn"],
+            target_setter_btn= left_result["target_setter_btn"],
+            prev_btn         = right_result["prev_btn"],
+            step_btn         = right_result["step_btn"],
+            pause_btn        = right_result["pause_btn"],
+            restart_btn      = right_result["restart_btn"],
+        )
 
-# ================= CANVAS =================
-canvas = tk.Canvas(display_panel, bg="#10111a", highlightthickness=0)
-canvas.grid(row=0, column=0, sticky="nsew")
+    state.register_ui_animation_callback(set_ui_animation_state)
+    state.set_ui_animation_state = set_ui_animation_state
+    state.update_button_states()
+    state.update_adjacency_list_ui()
 
-# ================= CONSOLE =================
-console_text = tk.Label(console_panel, text="Console", fg="#a8a8a8", bg="#10111a")
-console_text.grid(row=0, column=0, pady=(20, 10), sticky="ew")
+    canvas.bind("<Button-1>",       lambda e: helpers.filtered_canvas_click(e, canvas))
+    canvas.bind("<Motion>",         lambda e: helpers.filtered_mouse_move(e, canvas))
+    canvas.bind("<B1-Motion>",      lambda e: helpers.filtered_canvas_drag(e, canvas))
+    canvas.bind("<ButtonRelease-1>",lambda e: helpers.filtered_canvas_release(e, canvas))
+    canvas.bind("<Button-3>",       graph.start_canvas_pan)
+    canvas.bind("<B3-Motion>",      graph.drag_canvas_pan)
+    canvas.bind("<MouseWheel>",     graph.handle_mouse_wheel_zoom)
 
-status_label = tk.Label(console_panel, text="Status: Idle", fg="#a8a8a8", bg="#10111a")
-status_label.grid(row=1, column=0, sticky="w", padx=20, pady=(10, 6))
+    root.mainloop()
 
-hint_label = tk.Label(
-    console_panel, text="Select a mode to begin",
-    fg="#a8a8a8", bg="#10111a", justify="left", wraplength=300
-)
-hint_label.grid(row=2, column=0, sticky="w", padx=20)
 
-# ================= SETUP =================
-g.set_ui_refs(canvas, status_label, hint_label)
-canvas.bind("<Button-1>", g.on_canvas_click)
-canvas.bind("<Motion>", g.on_mouse_move)
-
-# ================= RESPONSIVE FONTS =================
-def update_ui(event=None):
-    title_label.config(font=("Instrument Sans", scale(48), "italic"))
-    control_text.config(font=("42dot Sans", scale(36)))
-    algo_text.config(font=("42dot Sans", scale(24)))
-    graph_text.config(font=("42dot Sans", scale(24)))
-    console_text.config(font=("42dot Sans", scale(36)))
-
-    btn_font = ("42dot Sans", scale(14))
-    for btn in (bfs_button, dfs_button, add_vertex_btn, add_edge_btn, restart_btn, reset_btn):
-        btn.config(font=btn_font)
-
-    status_label.config(font=("42dot Sans", scale(18)))
-    hint_label.config(font=("42dot Sans", scale(14)))
-
-root.bind("<Configure>", update_ui)
-root.update_idletasks()
-update_ui()
-
-root.mainloop()
+if __name__ == "__main__":
+    main()
