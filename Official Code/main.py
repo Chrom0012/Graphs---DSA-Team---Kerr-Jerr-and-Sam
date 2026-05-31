@@ -50,7 +50,7 @@ def _set_adaptive_geometry(root):
 
 def main():
     root = tk.Tk()
-    root.title("Graph Topology Engine Dashboard")
+    root.title("Graph Traversal Visualizer")
 
     _apply_dpi_scaling(root)
     _set_adaptive_geometry(root)
@@ -72,7 +72,7 @@ def main():
 
     app_title_lbl = tk.Label(
         top_header_bar,
-        text=" ⚡ GRAPH TRAVERSAL DIAGNOSTIC DASHBOARD",
+        text=" ⚡ Graph Traversal Visualizer",
         font=("Consolas", 15, "bold"),
         fg="#00e5ff", bg="#0e101a"
     )
