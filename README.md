@@ -28,7 +28,6 @@
    - [Zoom & Pan](#zoom--pan)  
    - [Animation Speed Control](#animation-speed-control)  
    - [Auto open Drawers](#auto-open-drawers)
-9. [Troubleshooting & Tips](#troubleshooting--tips)  
 
 ---
 Created by: Kerr, Jerr, and Sam
